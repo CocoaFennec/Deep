@@ -10,14 +10,24 @@ public class TerrainGeneration : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        coordinates = new Vector2[2000];
+
         // Sets the coordinates of the terrain
-        coordinates = new Vector2[]
+        for (int x = 0; x < 2000; x++)
         {
-            new Vector2(0,2),
-            new Vector2(1,2),
-            new Vector2(2,3),
-            new Vector2(3,2)
-        };
+            if(x < 11)
+            {
+                coordinates[x] = new Vector2(x, (Mathf.Pow(x-10, 2f)/100)+2000);
+            }
+            else if (x < 634)
+            {
+                coordinates[x] = new Vector2(x, (Mathf.Pow(x-10, 2f)/-750)+2000);
+            }
+            else if(x > 634)
+            {
+                coordinates[x] = new Vector2(x, (Mathf.Pow(x-1850, 2f)/1000)+1);
+            }
+        }
 
         Vector3[] vertices = new Vector3[3*coordinates.Length];
         int[] triangles = new int[12*(coordinates.Length-1)];
@@ -63,6 +73,9 @@ public class TerrainGeneration : MonoBehaviour
 
         MeshFilter meshFilter = GetComponent<MeshFilter>();
         meshFilter.mesh = mesh;
+
+        MeshCollider meshCollider = GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
     }
 
     // Update is called once per frame
